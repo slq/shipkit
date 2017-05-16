@@ -24,36 +24,53 @@ public class CloneGitRepositoryTask extends DefaultTask {
 
     private static final Logger LOG = Logging.getLogger(CloneGitRepositoryTask.class);
 
-    private String repository;
+    private String repositoryUrl;
     private File targetDir;
 
     @TaskAction
     public void cloneRepository() {
-        LOG.lifecycle("  Cloning repository {}\n    into {}", repository, targetDir);
+        LOG.lifecycle("  Cloning repository {}\n    into {}", repositoryUrl, targetDir);
         getProject().getBuildDir().mkdirs();    // build dir can be not created yet
         ProcessRunner processRunner = org.mockito.release.exec.Exec.getProcessRunner(getProject().getBuildDir());
-        processRunner.run("git", "clone", repository, targetDir.getAbsolutePath());
+        processRunner.run("git", "clone", repositoryUrl, targetDir.getAbsolutePath());
     }
-
-    //TODO ms - let's put javadoc on all public methods of the task
-    // No need to put it on "cloneRepository" method because it is not intended to be used by end users.
-    // It's nice if javadoc for 'repository' demonstrates an example value
-    // When reading the API by looking at method signature
+    
     //   I don't know if repository should be a name of repo or valid url to the repo
+    // TODO sf we clone from *-pristine to *-work so we need url here
+
+    /**
+     * See {@link #getRepositoryUrl()}
+     */
     @Input
-    public void setRepository(String repository) {
-        this.repository = repository;
+    public void setRepositoryUrl(String repositoryUrl) {
+        this.repositoryUrl = repositoryUrl;
     }
 
-    public String getRepository() {
-        return repository;
+    /**
+     * Repository URL, clone source location. It accept any kind of url accepted by git clone command.
+     * Examples:
+     * <ul>
+     *      <li>https://github.com/mockito/mockito</li>
+     *      <li>/Users/mstachniuk/code/mockito</li>
+     *      <li>file:///Users/mstachniuk/code/mockito</li>
+     * </ul>
+     */
+    public String getRepositoryUrl() {
+        return repositoryUrl;
     }
 
+    /**
+     * See {@link #getTargetDir()}
+     * @param targetDir
+     */
     @OutputDirectory
     public void setTargetDir(File targetDir) {
         this.targetDir = targetDir;
     }
 
+    /**
+     * A path where to clone a repository.
+     */
     public File getTargetDir() {
         return targetDir;
     }
