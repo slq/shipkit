@@ -34,7 +34,7 @@ public class CloneGitRepositoryTask extends DefaultTask {
         ProcessRunner processRunner = org.mockito.release.exec.Exec.getProcessRunner(getProject().getBuildDir());
         processRunner.run("git", "clone", repositoryUrl, targetDir.getAbsolutePath());
     }
-    
+
     //   I don't know if repository should be a name of repo or valid url to the repo
     // TODO sf we clone from *-pristine to *-work so we need url here
 
