@@ -1,4 +1,6 @@
 shipkit {
+    // TODO uncomment once version is updated
+//    gitHub.apiUrl = "https://api.github.com/"
     gitHub.repository = "mockito/mockito-release-tools"
     gitHub.writeAuthUser = "mockito"
     gitHub.writeAuthToken = System.getenv("GH_WRITE_TOKEN")
